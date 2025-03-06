@@ -9,23 +9,32 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  MenuItem,
+  Select,
   Stack,
   TextField,
 } from '@mui/material'
 import { useSnackbar } from 'notistack'
 import { useState } from 'react'
 
-export const AddItemButton = () => {
+// TODO (Cleanup): this should live somewhere else
+type Category = {
+  id: string
+  name: string
+  description: string | null
+}
+
+export const AddItemButton = ({ categories }: { categories: Category[] }) => {
   const { enqueueSnackbar } = useSnackbar()
   const [open, setOpen] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState("")
 
   const handleOpen = () => setOpen(true)
-  const handleClose = () => {
-    setOpen(false)
-  }
+  const handleClose = () => setOpen(false)
 
   const handleSubmit = async (formData: FormData) => {
     try {
+      formData.append("categoryId", selectedCategory) 
       await addItemAction(formData)
     } catch (error) {
       enqueueSnackbar(formatErrorMessage(error), { variant: 'error' })
@@ -46,6 +55,25 @@ export const AddItemButton = () => {
           <DialogContent>
             <Stack spacing={2} sx={{ my: 2 }}>
               <TextField name="name" label="Name" fullWidth />
+              <TextField name="photoUrl" label="Photo URL" fullWidth />
+              <div>
+                <Select
+                  value={selectedCategory}
+                  onChange={(event) => setSelectedCategory(event.target.value)}
+                  displayEmpty
+                  fullWidth
+                >
+                  <MenuItem value="" disabled>
+                    Choose a category
+                  </MenuItem>
+                  {categories.map((category) => (
+                    <MenuItem key={category.id} value={category.id}>
+                      {category.name} - {category.description || "No description"}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </div>
+
               <TextField
                 name="description"
                 label="Description"

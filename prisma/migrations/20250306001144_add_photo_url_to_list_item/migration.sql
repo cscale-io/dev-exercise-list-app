@@ -1,0 +1,1 @@
+ALTER TABLE "ListItem" ADD COLUMN "photoUrl" TEXT NOT NULL;
