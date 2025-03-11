@@ -1,5 +1,12 @@
 import { SnackbarClientProvider } from '@/components/SnackbarClientProvider'
-import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
+import {
+  ClerkProvider,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/nextjs'
 import { AppBar, Box, Button, CssBaseline, Toolbar, Typography } from '@mui/material'
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter'
 import { ThemeProvider } from '@mui/material/styles'
@@ -47,11 +54,19 @@ export default function RootLayout({
                       >
                         List App
                       </Typography>
-                      <Box>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          gap: '1rem',
+                        }}
+                      >
                         <SignedOut>
                           <SignInButton>
                             <Button variant="contained">Sign in</Button>
                           </SignInButton>
+                          <SignUpButton>
+                            <Button variant="contained">Sign up</Button>
+                          </SignUpButton>
                         </SignedOut>
                         <SignedIn>
                           <UserButton />
