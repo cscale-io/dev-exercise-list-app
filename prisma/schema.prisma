@@ -13,16 +13,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-model ListItem {
-  id        String   @id @default(uuid())
+model User {
+  id        String     @id @default(uuid())
   name      String
-  description String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt  
-  authorId  String
-
-  @@index([authorId])
+  email     String     @unique
+  password  String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  listItems ListItem[]
 }
 
+model ListItem {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  photoUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id])
 
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  @@index([authorId])
+  @@index([categoryId])
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  listItems ListItem[]
+}

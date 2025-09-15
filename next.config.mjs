@@ -1,4 +1,14 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'xseed-challenge.s3.us-east-2.amazonaws.com',
+      },
+    ],
+  },
+}
 
 export default nextConfig

@@ -5,6 +5,7 @@ import { pluralize } from '@/lib/utils'
 import {
   Box,
   Divider,
+  Link,
   List,
   ListItem,
   ListItemButton,
@@ -12,13 +13,14 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
+import NextLink from 'next/link'
 
 export default async function Home() {
-  const authUser = getCurrentAuthUser()
+  const authUser = await getCurrentAuthUser()
   const items = await listMyItems(authUser)
 
   return (
-    <Stack spacing={2} sx={{ maxWidth: 400 }}>
+    <Stack spacing={2} sx={{ maxWidth: 400, margin: '0 auto' }}>
       <Box
         sx={{
           display: 'flex',
@@ -36,7 +38,10 @@ export default async function Home() {
         </Typography>
 
         <AddItemButton />
+
+        
       </Box>
+      
       {items.length > 0 && (
         <Box
           sx={{
@@ -59,6 +64,14 @@ export default async function Home() {
           </List>
         </Box>
       )}
+
+      <Typography variant="body1">
+        You can also create a new {' '}
+        <Link href="/category" component={NextLink}>
+          category
+        </Link>
+        .
+        </Typography>
     </Stack>
   )
 }
